@@ -1,0 +1,26 @@
+{% extends 'sondages/../recette_templetes/_base.html' %}
+
+{% block contenu %}
+    <ul>
+    Veuillez indiquer votre reponse :<br/>
+    <form method="post" action="{% url 'sondages:voter' question.id %}">
+        <a href="{% url 'sondages:resultats' question.id %}">{{ question.texte }}</a><br/><br/>
+
+        {% for question in question.reponse_set.all %}
+            <p>
+
+                <input type="radio" name="reponse" value="{{ question.id }}" id="{{ question.id }}"/><label
+                    for="{{ question.id }}">{{ question.texte }}</label>
+
+
+            </p>
+
+        {% endfor %}
+
+        <input type="submit" value="Voter !"/>
+        {% csrf_token %}
+    </form>
+
+{% endblock %}
+</ul>
+{% block titre %}{{ question.texte }}{% endblock %}

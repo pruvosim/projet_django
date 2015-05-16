@@ -5,6 +5,6 @@ from django.views import generic
 
 class IndexView(generic.ListView):
     model = Recette
-    template_name = 'recette/index.html'
+    template_name = 'recette_templetes/index.html'
     context_object_name = 'recette'
 
