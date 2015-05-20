@@ -1,0 +1,9 @@
+<h3>Bienvenue !</h3>
+
+<h4>les Recettes</h4>
+
+<ul>
+    {% for r in recette %}
+        <li><a href="{% url 'recette:recettes' r.id %}">{{ r.titre }}</a></li>
+    {% endfor %}
+</ul>

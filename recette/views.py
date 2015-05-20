@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
 
 from .models import *
+
 
 # Create your views here.
 
@@ -11,10 +12,19 @@ def index(request):
     contexte = {
         'recette': recettes,
     }
-    return render(request, 'recette_templetes/index.html', contexte)
+    return render(request, 'recette/index.html', contexte)
+
+
+def recettes(request, id):
+    recette = get_object_or_404(Recette, id=id)
+    contexte = {
+        'recette': recette,
+    }
+    return render(request, 'recette/recette.html', contexte)
+
 
 class IndexView(generic.ListView):
     model = Recette
-    template_name = 'recette_templetes/index.html'
+    template_name = 'recette/index.html'
     context_object_name = 'recette'
 
