@@ -7,7 +7,6 @@ from .models import *
 # Create your views here.
 
 def index(request):
-    # questions = get_object_or_404(Question, all)
     recettes = Recette.objects.all()
     contexte = {
         'recette': recettes,
@@ -27,4 +26,5 @@ class IndexView(generic.ListView):
     model = Recette
     template_name = 'recette/index.html'
     context_object_name = 'recette'
+
 
