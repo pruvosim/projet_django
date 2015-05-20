@@ -1,6 +1,7 @@
 <h3>Bienvenue !</h3>
 
 <h4>les recette</h4>
-<ul>
 
-</ul>
+{% for r in recettes %}
+    <li> {{ r.titre }} </li>
+{% endfor %}

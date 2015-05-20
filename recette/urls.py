@@ -1,9 +1,10 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
+
 from recette.views import IndexView
 
 
 urlpatterns = patterns('',
-                       url(r'^$', IndexView.as_view(), name='index'),
+                       url(r'index/$', IndexView.as_view(), name='index'),
                      
 )
 
