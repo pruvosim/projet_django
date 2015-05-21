@@ -19,12 +19,17 @@
         <div class="row">
             <div class="col-md-7">
                 <a href="{% url 'recette:recettes' r.id %}">
-                    <img class="img-responsive" src="http://placehold.it/700x300" alt="">
+                    {% if r.images.all %}
+                        {% with r.images.all|first as first_img %}
+                            <img class="img-responsive" src="{{ first_img.chemin }}" alt="{{ r.titre }}">{% endwith %}
+                    {% else %}
+                        <img class="img-responsive" src="http://placehold.it/700x300" alt="">
+                    {% endif %}
                 </a>
             </div>
             <div class="col-md-5">
                 <h3>{{ r.titre }}</h3>
-                <h4>Note : </h4>
+                <h4>Note : {{ r.note }}/5</h4>
 
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita
                     laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos

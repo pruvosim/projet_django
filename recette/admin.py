@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Recette, Images, Commentaire, Etape, Type_Recette, Ingredient
+from .models import Recette, Images, Etape, Type_Recette, Ingredient
 
 
 class RecetteAdmin(admin.ModelAdmin):
@@ -16,6 +16,10 @@ class EtapeAdmin(admin.ModelAdmin):
     list_filter = ('numero_etape', 'nom_etape')
 
 
+class ImageAdmin(admin.ModelAdmin):
+    list_filter = ['nom']
+
+
 class Type_RecetteAdmin(admin.ModelAdmin):
     list_filter = ['type_recette']
 
@@ -25,4 +29,5 @@ admin.site.register(Recette, RecetteAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Etape, EtapeAdmin)
 admin.site.register(Type_Recette, Type_RecetteAdmin)
+admin.site.register(Images, ImageAdmin)
 
