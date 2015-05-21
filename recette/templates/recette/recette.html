@@ -4,20 +4,26 @@
 
     <h1> {{ recette.titre }} </h1>
 
-    <p>Difficulte : /
-        <br/>Cout : /
-        <br/>Note : /
-        <br/>Temps de cuisson : /
-        <br/>Temps de repos : / </p>
+    <p>Difficulte : {{ recette.difficulte }}/5
+        <br/>Cout : {{ recette.cout }} €
+        <br/>Note : {{ recette.note }}/5
+        <br/>Temps de cuisson : {{ recette.temps_cuisson }} minutes
+        <br/>Temps de repos : {{ recette.temps_repos }} minutes</p>
 
     <p>Pour cette recette vous aurez besoin de :
-        <br/>*
-        <br/>*
-        <br/>*</p>
+    <ul>
+        {% for ingredient in recette.ingredients.all %}
+            <li>{{ ingredient }}</li>
+        {% endfor %}
+    </ul>
+    </p>
 
     <p>Etapes à suivre :
-        <br/>*
-        <br/>*
-        <br/>*</p>
+    <ul>
+        {% for etape in recette.etapes.all %}
+            <li>{{ etape }}</li>
+        {% endfor %}
+    </ul>
+    </p>
 
 {% endblock %}
