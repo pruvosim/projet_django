@@ -16,21 +16,26 @@
     {% for r in recette %}
         <!-- <li><a href="{% url 'recette:recettes' r.id %}">{{ r.titre }}</a></li> -->
 
-
         <div class="row">
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+            <div class="col-md-7">
+                <a href="{% url 'recette:recettes' r.id %}">
+                    <img class="img-responsive" src="http://placehold.it/700x300" alt="">
                 </a>
+            </div>
+            <div class="col-md-5">
+                <h3>{{ r.titre }}</h3>
+                <h4>Note : </h4>
 
-                <h3>
-                    <a href="{% url 'recette:recettes' r.id %}">{{ r.titre }}</a>
-                </h3>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida
-                    pellentesque urna varius vitae.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium veniam exercitationem expedita
+                    laborum at voluptate. Labore, voluptates totam at aut nemo deserunt rem magni pariatur quos
+                    perspiciatis atque eveniet unde.</p>
+                <a class="btn btn-primary" href="{% url 'recette:recettes' r.id %}">Voir la recette <span
+                        class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
         </div>
+
+        <hr>
+
 
     {% endfor %}
     <!-- </ul> -->
