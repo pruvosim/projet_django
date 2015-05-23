@@ -50,12 +50,12 @@ def AuthView(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            # Redirect to a success page.
+            return render(request, 'recette/auth_results.html')
         else:
             # Return a 'disabled account' error message
-            pass
+            return render(request, 'recette/login.html')
     else:
         # Return an 'invalid login' error message.
-        pass
+        return render(request, 'recette/login.html')
 
 
