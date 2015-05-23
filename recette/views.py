@@ -30,7 +30,7 @@ class IndexView(generic.ListView):
     context_object_name = 'recette'
 
 
-def login(request):
+def user_login(request):
     if request.method == 'POST':
         formulaire = LoginForm(request.POST)
         if formulaire.is_valid():
@@ -50,7 +50,8 @@ def AuthView(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            return render(request, 'recette/auth_results.html')
+            return index(request)
+            # return render(request, index(request))
         else:
             # Return a 'disabled account' error message
             return render(request, 'recette/login.html')
