@@ -84,3 +84,17 @@ def nouvelle_recette(request):
 def supprimer_recette(request, id):
     recette = get_object_or_404(Recette, pk=id).delete()
     return index(request)
+
+def rechercher(request):
+    if request.method == 'GET':
+        terme_recherche = request.GET.get('r', '')
+        if terme_recherche:
+            recettes = Recette.objects.filter(titre__icontains=terme_recherche)
+            contexte = {
+                'recette': recettes,
+            }
+            return render(request, 'recette/rechercher.html', contexte)
+        else:
+            return render(request, 'recette/rechercher.html')
+    else:
+        return render(request, 'recette/rechercher.html')
