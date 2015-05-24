@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from recette.views import IndexView, AuthView, recettes, user_login, user_logout, nouvelle_recette
+from recette.views import IndexView, AuthView, recettes, user_login, user_logout, nouvelle_recette, supprimer_recette
 
 
 urlpatterns = patterns('',
@@ -10,6 +10,7 @@ urlpatterns = patterns('',
                        url(r'^auth/$', AuthView, name='auth'),
                        url(r'nouvelle_recette/$', nouvelle_recette, name='nouvelle_recette'),
                        url(r'recettes/(?P<id>\d+)/$', recettes, name="recettes"),
+                       url(r'supprimer_recette/(?P<id>\d+)/$', supprimer_recette, name="supprimer_recette"),
 
 
 )

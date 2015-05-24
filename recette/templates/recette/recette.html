@@ -8,7 +8,8 @@
         <br/>Cout : {{ recette.cout }} €
         <br/>Note : {{ recette.note }}/5
         <br/>Temps de cuisson : {{ recette.temps_cuisson }} minutes
-        <br/>Temps de repos : {{ recette.temps_repos }} minutes</p>
+        <br/>Temps de repos : {{ recette.temps_repos }} minutes
+    </p>
 
     <p>Pour cette recette vous aurez besoin de :
     <ul>
@@ -25,5 +26,8 @@
         {% endfor %}
     </ul>
     </p>
+
+    <a class="btn btn-primary" href="{% url 'recette:supprimer_recette' recette.id %}">Supprimer la recette <span
+                        class="glyphicon glyphicon-chevron-right"></span></a>
 
 {% endblock %}

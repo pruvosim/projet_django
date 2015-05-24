@@ -79,3 +79,8 @@ def nouvelle_recette(request):
         'formulaire': formulaire,
     }
     return render(request, 'recette/nouvelle_recette.html', contexte)
+
+
+def supprimer_recette(request, id):
+    recette = get_object_or_404(Recette, pk=id).delete()
+    return index(request)
