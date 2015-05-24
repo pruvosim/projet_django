@@ -51,7 +51,11 @@
                     <a href="#">Créer une nouvelle recette</a>
                 </li>
                 <li>
-                    <a href="/login">Connexion</a>
+                    {% if is_user_authenticated %}
+                        <a href="/logout">Déconnexion</a>
+                    {% else %}
+                        <a href="/login">Connexion</a>
+                    {% endif %}
                 </li>
                 <li>
                     <a href="#">A propos</a>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
 
 from .models import *
@@ -10,8 +11,10 @@ from .models import *
 
 def index(request):
     recettes = Recette.objects.all()
+    is_user_authenticated = request.user.is_authenticated()
     contexte = {
         'recette': recettes,
+        'is_user_authenticated': is_user_authenticated,
     }
     return render(request, 'recette/index.html', contexte)
 
@@ -42,6 +45,9 @@ def user_login(request):
     }
     return render(request, 'recette/login.html', contexte)
 
+def user_logout(request):
+    return render(request, 'recette/login.html')
+
 
 def AuthView(request):
     username = request.POST['username']
@@ -59,4 +65,17 @@ def AuthView(request):
         # Return an 'invalid login' error message.
         return render(request, 'recette/login.html')
 
-
+#A verifier ca n'a pas l'air de fonctionner
+#@login_required(login_url='/login/')
+def nouvelle_recette(request):
+    from .forms import RecetteForm
+    if request.method == 'POST':
+        formulaire = RecetteForm(request.POST)
+        if formulaire.is_valid():
+            formulaire.save()
+    else:
+        formulaire = RecetteForm()
+    contexte = {
+        'formulaire': formulaire,
+    }
+    return render(request, 'recette/nouvelle_recette.html', contexte)
