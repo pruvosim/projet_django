@@ -4,7 +4,7 @@ from recette.views import IndexView, AuthView, recettes, user_login, user_logout
 
 
 urlpatterns = patterns('',
-                       url(r'^/$', IndexView.as_view(), name='index'),
+                       url(r'^$', IndexView.as_view(), name='index'),
                        url(r'index/$', IndexView.as_view(), name='index'),
                        url(r'login/$', user_login, name='login'),
                        url(r'logout/$', user_logout, name='logout'),
