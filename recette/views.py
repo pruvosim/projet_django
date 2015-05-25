@@ -3,7 +3,8 @@ from django.views import generic
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
-
+from django.views.generic.edit import UpdateView
+from django.views.generic import CreateView
 from .models import *
 
 
@@ -84,6 +85,14 @@ def nouvelle_recette(request):
 def supprimer_recette(request, id):
     recette = get_object_or_404(Recette, pk=id).delete()
     return index(request)
+
+
+class ModifierRecette(UpdateView):
+    model = Recette
+    fields = ['titre', 'type_recette', 'cout', 'temps_cuisson', 'temps_repos', 'ingredients', 'etapes',
+                  'difficulte', 'images', 'note']
+    template_name = "recette/modifier_recette.html"
+
 
 def rechercher(request):
     if request.method == 'GET':
