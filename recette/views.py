@@ -6,6 +6,7 @@ from .forms import LoginForm
 from django.views.generic.edit import UpdateView
 from django.views.generic import CreateView
 from .models import *
+from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -58,13 +59,23 @@ def AuthView(request):
         if user.is_active:
             login(request, user)
             return index(request)
-            # return render(request, index(request))
         else:
             # Return a 'disabled account' error message
-            return render(request, 'recette/login.html')
+            formulaire = LoginForm()
+            formulaire.add_error()
+            contexte = {
+                'form': formulaire,
+                'DesactivatedUser' : True,
+            }
+            return render(request, 'recette/login.html', contexte)
     else:
         # Return an 'invalid login' error message.
-        return render(request, 'recette/login.html')
+        formulaire = LoginForm()
+        contexte = {
+            'form': formulaire,
+            'badLogin' : True,
+        }
+        return render(request, 'recette/login.html', contexte)
 
 #A verifier ca n'a pas l'air de fonctionner
 #@login_required(login_url='/login/')
@@ -81,13 +92,12 @@ def nouvelle_recette(request):
     }
     return render(request, 'recette/nouvelle_recette.html', contexte)
 
-
 def supprimer_recette(request, id):
     recette = get_object_or_404(Recette, pk=id).delete()
     return index(request)
 
 
-class ModifierRecette(UpdateView):
+class modifier_recette(UpdateView):
     model = Recette
     fields = ['titre', 'type_recette', 'cout', 'temps_cuisson', 'temps_repos', 'ingredients', 'etapes',
                   'difficulte', 'images', 'note']

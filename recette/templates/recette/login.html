@@ -2,8 +2,12 @@
 
 {% block contenu %}
 
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
+    {% if badLogin %}
+        <font color="red"><p>Votre Login et votre Mot de passe ne correspondent pas. Veuillez essayer de nouveau.</p></font>
+    {% endif %}
+
+    {% if DesactivatedUser %}
+        <font color="red"><p>Votre compte a &eacute;t&eacute; d&eacute;sactiv&eacute;. Veuillez contacter un administrateur.</p></font>
     {% endif %}
 
     <form method="post" action="{% url 'recette:auth' %}">
