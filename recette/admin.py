@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Recette, Images, Etape, Type_Recette, Ingredient
+from .models import Recette, Images, Etape, Type_Recette, Ingredient, Commentaire
 
 
 class RecetteAdmin(admin.ModelAdmin):
@@ -24,10 +24,14 @@ class Type_RecetteAdmin(admin.ModelAdmin):
     list_filter = ['type_recette']
 
 
+class CommentaireAdmin(admin.ModelAdmin):
+    list_filter = ['contenu', 'utilisateur']
+
+
 # Register your models here.
 admin.site.register(Recette, RecetteAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Etape, EtapeAdmin)
 admin.site.register(Type_Recette, Type_RecetteAdmin)
 admin.site.register(Images, ImageAdmin)
-
+admin.site.register(Commentaire, CommentaireAdmin)

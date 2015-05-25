@@ -52,4 +52,5 @@ class Etape(models.Model):
 
 class Commentaire(models.Model):
     contenu = models.CharField(max_length=255)
+    utilisateur = models.CharField(max_length=50, default="Anonyme")
 
