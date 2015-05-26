@@ -1,11 +1,9 @@
 {% extends 'recette/_base.html' %}
 
-{{ recette.titre }}
-{{ form.non_field_errors }}
+{% block contenu %}
 <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Modifier Recette" />
 </form>
-
-YOLO SWAG
+{% endblock %}

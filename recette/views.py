@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib.auth import authenticate, login, logout
@@ -52,7 +53,6 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    #del request.session['connected_user']
     return index(request)
 
 
@@ -104,10 +104,16 @@ def supprimer_recette(request, id):
 
 
 class modifier_recette(UpdateView):
+    from .forms import RecetteForm
     model = Recette
-    fields = ['titre', 'type_recette', 'cout', 'temps_cuisson', 'temps_repos', 'ingredients', 'etapes',
-                  'difficulte', 'images', 'note']
+    form_class = RecetteForm
     template_name = "recette/modifier_recette.html"
+
+    def form_valid(self, form):
+        return HttpResponseRedirect("/index")
+
+    def form_invalid(self, form):
+        return HttpResponseRedirect("/index")
 
 
 def rechercher(request):
