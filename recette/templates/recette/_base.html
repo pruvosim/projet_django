@@ -51,7 +51,7 @@
                     <a href="/nouvelle_recette">Créer une nouvelle recette</a>
                 </li>
                 <li>
-                    {% if is_user_authenticated %}
+                    {% if request.session.connected_user %}
                         <a href="/logout">Déconnexion</a>
                     {% else %}
                         <a href="/login">Connexion</a>

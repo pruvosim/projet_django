@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
 from django.views.generic.edit import UpdateView
@@ -13,10 +13,8 @@ from django.contrib.auth.hashers import make_password
 
 def index(request):
     recettes = Recette.objects.all()
-    is_user_authenticated = request.user.is_authenticated()
     contexte = {
         'recette': recettes,
-        'is_user_authenticated': is_user_authenticated,
     }
     return render(request, 'recette/index.html', contexte)
 
@@ -36,6 +34,11 @@ class IndexView(generic.ListView):
 
 
 def user_login(request):
+    try :
+        if request.session['connected_user']:
+            return index(request)
+    except Exception as e:
+        pass
     if request.method == 'POST':
         formulaire = LoginForm(request.POST)
         if formulaire.is_valid():
@@ -48,7 +51,9 @@ def user_login(request):
     return render(request, 'recette/login.html', contexte)
 
 def user_logout(request):
-    return render(request, 'recette/login.html')
+    logout(request)
+    #del request.session['connected_user']
+    return index(request)
 
 
 def AuthView(request):
@@ -58,6 +63,7 @@ def AuthView(request):
     if user is not None:
         if user.is_active:
             login(request, user)
+            request.session['connected_user'] = user
             return index(request)
         else:
             # Return a 'disabled account' error message
