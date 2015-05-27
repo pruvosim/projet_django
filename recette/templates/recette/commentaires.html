@@ -2,10 +2,35 @@
 
 {% block contenu %}
 
-    {% for c in commentaires %}
+    <h3>Commentaires sur la recette : {{ recette.titre }}</h3>
 
-        <p>{{ c.utilisateur }} : {{ c.contenu }}</p>
+    {% if not commentaires %}
 
-    {% endfor %}
+        <p>Pas de commentaires à afficher</p>
+
+    {% else %}
+
+        {% for c in commentaires %}
+
+            <p>{{ c.utilisateur }} : {{ c.contenu }}</p>
+
+        {% endfor %}
+
+    {% endif %}
+
+    <hr>
+
+    {% if request.session.connected_user %}
+        <form method="post" action="{% url 'recette:commentaire_post' recette.id %}">
+            {{ formulaire.as_p }}
+            {% csrf_token %}
+            <input type="submit" value="Poster le commentaire"/>
+        </form>
+    {% else %}
+        <p>Vous devez etre connecté pour pouvoir poster un commentaire</p>
+        <p>Connectez vous ici : <a href="/login">Connexion</a></p>
+    {% endif %}
+
+
 
 {% endblock %}

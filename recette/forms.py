@@ -1,5 +1,5 @@
 from django import forms
-from .models import Recette
+from .models import Recette, Commentaire
 
 
 class LoginForm(forms.Form):
@@ -12,3 +12,13 @@ class RecetteForm(forms.ModelForm):
         model = Recette
         fields = ['titre', 'type_recette', 'cout', 'temps_cuisson', 'temps_repos', 'ingredients', 'etapes',
                   'difficulte', 'images', 'note']
+
+
+class CommentaireForm(forms.ModelForm):
+    class Meta:
+        model = Commentaire
+        fields = ['contenu']
+        labels = {
+            'contenu': ("Commentaire")
+        }
+

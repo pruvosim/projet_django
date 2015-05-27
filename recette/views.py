@@ -1,9 +1,9 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm
+from .forms import LoginForm, CommentaireForm
 from django.views.generic.edit import UpdateView
 from django.views.generic import CreateView
 from .models import *
@@ -30,15 +30,48 @@ def recettes(request, id):
     return render(request, 'recette/recette.html', contexte)
 
 def commentaires(request, id):
+    #redirect_if_not_logged_in(request)
+    #if not request.user.is_authenticated():
+    #    return redirect("/login")
+    recette = Recette.objects.get(id=id)
     commentaires_id = Recette.objects.filter(id=id).values('commentaires')
     commentaires = []
+    formulaire = CommentaireForm(request.POST)
+    if formulaire.is_valid():
+            formulaire.save()
+    else:
+        formulaire = CommentaireForm()
     for i in commentaires_id:
-        c = Commentaire.objects.get(id=i['commentaires'])
-        commentaires.append(c)
+        try:
+            c = Commentaire.objects.get(id=i['commentaires'])
+            commentaires.append(c)
+        except Exception as e:
+            c = None
     contexte = {
+        'recette': recette,
         'commentaires': commentaires,
+        'formulaire': formulaire,
     }
     return render(request, 'recette/commentaires.html', contexte)
+
+
+def CommentairePostView(request, id):
+    contenu = request.POST['contenu']
+    if contenu:
+        c = Commentaire(utilisateur=request.user.username, contenu=contenu)
+        c.save()
+        r = Recette.objects.get(id=id)
+        r.commentaires.add(c)
+        r.save()
+        return commentaires(request, id)
+    #else:
+    #    # Return an error message.
+    #    formulaire = CommentaireForm()
+    #    contexte = {
+    #        'form': formulaire,
+    #        'error' : True,
+    #    }
+    #    return render(request, 'recette/comm.html', contexte)
 
 
 class IndexView(generic.ListView):
@@ -122,11 +155,14 @@ class modifier_recette(UpdateView):
     form_class = RecetteForm
     template_name = "recette/modifier_recette.html"
 
-    def form_valid(self, form):
-        return HttpResponseRedirect("/index")
+    def get_success_url(self):
+       return "/index"
 
-    def form_invalid(self, form):
-        return HttpResponseRedirect("/index")
+    #def form_valid(self, form):
+        #return HttpResponseRedirect("/index")
+
+    #def form_invalid(self, form):
+        #return HttpResponseRedirect("/index")
 
 
 def rechercher(request):
@@ -142,3 +178,12 @@ def rechercher(request):
             return render(request, 'recette/rechercher.html')
     else:
         return render(request, 'recette/rechercher.html')
+
+
+def redirect_if_not_logged_in(request):
+#    if 'connected_user' not in request.session:
+#        user_login(request)
+#    elif not request.session['connected_user']:
+#        user_login(request)
+    if not request.user.is_authenticated():
+        return redirect("/login")
