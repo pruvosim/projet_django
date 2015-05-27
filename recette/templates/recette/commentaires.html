@@ -1,0 +1,11 @@
+{% extends 'recette/_base.html' %}
+
+{% block contenu %}
+
+    {% for c in commentaires %}
+
+        <p>{{ c.utilisateur }} : {{ c.contenu }}</p>
+
+    {% endfor %}
+
+{% endblock %}

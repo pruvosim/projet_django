@@ -22,10 +22,23 @@ def index(request):
 
 def recettes(request, id):
     recette = get_object_or_404(Recette, id=id)
+    nb_commentaires = Recette.objects.filter(id=id).values('commentaires').count()
     contexte = {
         'recette': recette,
+        'nb_commentaires': nb_commentaires,
     }
     return render(request, 'recette/recette.html', contexte)
+
+def commentaires(request, id):
+    commentaires_id = Recette.objects.filter(id=id).values('commentaires')
+    commentaires = []
+    for i in commentaires_id:
+        c = Commentaire.objects.get(id=i['commentaires'])
+        commentaires.append(c)
+    contexte = {
+        'commentaires': commentaires,
+    }
+    return render(request, 'recette/commentaires.html', contexte)
 
 
 class IndexView(generic.ListView):

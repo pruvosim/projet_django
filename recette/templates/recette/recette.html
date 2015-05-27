@@ -27,7 +27,12 @@
     </ul>
     </p>
 
+    <p><a href="{% url 'recette:commentaires' recette.id %}">{{ nb_commentaires }} Commentaires (Voir)</a></p>
+
     <a class="btn btn-primary" href="{% url 'recette:supprimer_recette' recette.id %}">Supprimer la recette <span
+                        class="glyphicon glyphicon-chevron-right"></span></a>
+
+    <a class="btn btn-primary" href="{% url 'recette:modifier_recette' recette.id %}">Modifier la recette <span
                         class="glyphicon glyphicon-chevron-right"></span></a>
 
 {% endblock %}
