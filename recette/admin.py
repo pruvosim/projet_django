@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Recette, Images, Etape, Type_Recette, Ingredient, Commentaire
+from .models import Recette, Images, Etape, Type_Recette, Ingredient, Commentaire, Note
 
 
 class RecetteAdmin(admin.ModelAdmin):
-    list_filter = ('titre', 'type_recette', 'difficulte', 'cout', 'temps_cuisson', 'temps_repos', 'note',
+    list_filter = ('titre', 'type_recette', 'difficulte', 'cout', 'temps_cuisson', 'temps_repos',
                    'date_creation', 'ingredients', 'etapes', 'images')
     date_hierarchy = 'date_creation'
 
@@ -28,6 +28,10 @@ class CommentaireAdmin(admin.ModelAdmin):
     list_filter = ['contenu', 'utilisateur']
 
 
+class NoteAdmin(admin.ModelAdmin):
+    list_filter = ['utilisateur', 'note_utilisateur', 'recette']
+
+
 # Register your models here.
 admin.site.register(Recette, RecetteAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
@@ -35,3 +39,4 @@ admin.site.register(Etape, EtapeAdmin)
 admin.site.register(Type_Recette, Type_RecetteAdmin)
 admin.site.register(Images, ImageAdmin)
 admin.site.register(Commentaire, CommentaireAdmin)
+admin.site.register(Note, NoteAdmin)

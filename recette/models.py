@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -9,7 +10,6 @@ class Recette(models.Model):
     cout = models.FloatField()
     temps_cuisson = models.PositiveIntegerField()
     temps_repos = models.PositiveIntegerField()
-    note = models.PositiveIntegerField()
     date_creation = models.DateField(auto_now=True)
     ingredients = models.ManyToManyField('Ingredient')
     images = models.ManyToManyField('Images', blank=True, null=True)
@@ -54,3 +54,8 @@ class Commentaire(models.Model):
     contenu = models.CharField(max_length=255)
     utilisateur = models.CharField(max_length=50, default="Anonyme")
 
+
+class Note(models.Model):
+    note_utilisateur = models.PositiveIntegerField()
+    utilisateur = models.ForeignKey(User)
+    recette = models.ForeignKey(Recette)

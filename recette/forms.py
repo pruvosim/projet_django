@@ -11,7 +11,7 @@ class RecetteForm(forms.ModelForm):
     class Meta:
         model = Recette
         fields = ['titre', 'type_recette', 'cout', 'temps_cuisson', 'temps_repos', 'ingredients', 'etapes',
-                  'difficulte', 'images', 'note']
+                  'difficulte', 'images']
 
 
 class CommentaireForm(forms.ModelForm):
