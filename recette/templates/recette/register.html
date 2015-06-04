@@ -1,0 +1,11 @@
+{% extends 'recette/_base.html' %}
+
+{% block contenu %}
+
+    <form method="post" action="{% url 'recette:register' %}">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="OK"/>
+    </form>
+
+{% endblock %}

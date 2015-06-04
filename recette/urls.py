@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from recette.views import IndexView, AuthView, recettes, user_login, user_logout, nouvelle_recette, supprimer_recette \
+from recette.views import IndexView, AuthView, RegisterView, recettes, user_login, user_logout, user_create, nouvelle_recette, supprimer_recette \
     , rechercher, modifier_recette, commentaires, CommentairePostView, new_recipe
 
 
@@ -9,6 +9,8 @@ urlpatterns = patterns('',
                        url(r'login/$', user_login, name='login'),
                        url(r'logout/$', user_logout, name='logout'),
                        url(r'^auth/$', AuthView, name='auth'),
+                       url(r'^create/$', user_create, name='create'),
+                       url(r'^register/$', RegisterView, name='register'),
                        url(r'nouvelle_recette/$', nouvelle_recette, name='nouvelle_recette'),
                        url(r'new_recipe/$', new_recipe, name='new_recipe'),
                        url(r'recettes/(?P<id>\d+)/$', recettes, name="recettes"),

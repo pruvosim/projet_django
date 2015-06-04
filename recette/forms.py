@@ -7,6 +7,14 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, label="Mot de passe", max_length=100)
 
 
+class RegisterForm(forms.Form):
+    username = forms.CharField(label="Login", max_length=100, required=True)
+    first_name = forms.CharField(label="Prenom", max_length=30, required=True)
+    last_name = forms.CharField(label="Nom", max_length=50, required=True)
+    password = forms.CharField(widget=forms.PasswordInput, label="Mot de passe", max_length=100)
+    email = forms.CharField(label="Email", max_length=200, required=False)
+
+
 class RecetteForm(forms.ModelForm):
     class Meta:
         model = Recette

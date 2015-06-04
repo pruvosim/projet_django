@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm, CommentaireForm
+from .forms import LoginForm, RegisterForm, CommentaireForm
 from django.views.generic.edit import UpdateView
 from .models import *
 
@@ -97,6 +97,17 @@ def user_logout(request):
     logout(request)
     return index(request)
 
+def user_create(request):
+    try :
+        if request.session['connected_user']:
+            return index(request)
+    except Exception as e:
+        pass
+    formulaire = RegisterForm()
+    contexte = {
+        'form': formulaire,
+    }
+    return render(request, 'recette/register.html', contexte)
 
 def AuthView(request):
     username = request.POST['username']
@@ -124,6 +135,18 @@ def AuthView(request):
             'badLogin' : True,
         }
         return render(request, 'recette/login.html', contexte)
+
+def RegisterView(request):
+     username = request.POST['username']
+     first_name = request.POST['first_name']
+     last_name = request.POST['last_name']
+     password = request.POST['password']
+     email = request.POST['email']
+     user = User.objects.create_user(username=username, email=email, password=password)
+     user.first_name = first_name
+     user.last_name = last_name
+     user.save()
+     return AuthView(request)
 
 #A verifier ca n'a pas l'air de fonctionner
 #@login_required(login_url='/login/')
