@@ -1,0 +1,9 @@
+{% extends 'recette/_base.html' %}
+
+{% block contenu %}
+    <form method="post" action="{% url 'recette:new_recipe' %}">
+        {% csrf_token %}
+        {{ formulaire.as_p }}
+        <input type="submit" value="OK"/>
+    </form>
+{% endblock %}

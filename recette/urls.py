@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
-from recette.views import IndexView, AuthView, recettes, user_login, user_logout, nouvelle_recette, supprimer_recette\
-    , rechercher, modifier_recette, commentaires, CommentairePostView
+from recette.views import IndexView, AuthView, recettes, user_login, user_logout, nouvelle_recette, supprimer_recette \
+    , rechercher, modifier_recette, commentaires, CommentairePostView, new_recipe
 
 
 urlpatterns = patterns('',
@@ -10,6 +10,7 @@ urlpatterns = patterns('',
                        url(r'logout/$', user_logout, name='logout'),
                        url(r'^auth/$', AuthView, name='auth'),
                        url(r'nouvelle_recette/$', nouvelle_recette, name='nouvelle_recette'),
+                       url(r'new_recipe/$', new_recipe, name='new_recipe'),
                        url(r'recettes/(?P<id>\d+)/$', recettes, name="recettes"),
                        url(r'recettes/(?P<id>\d+)/commentaires/$', commentaires, name="commentaires"),
                        url(r'recettes/(?P<id>\d+)/commentaire_post/$', CommentairePostView, name='commentaire_post'),

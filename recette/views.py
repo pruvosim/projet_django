@@ -1,13 +1,9 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, CommentaireForm
 from django.views.generic.edit import UpdateView
-from django.views.generic import CreateView
 from .models import *
-from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -143,6 +139,69 @@ def nouvelle_recette(request):
         'formulaire': formulaire,
     }
     return render(request, 'recette/nouvelle_recette.html', contexte)
+
+
+def new_recipe(request):
+    from .forms import NouvelleRecetteForm
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NouvelleRecetteForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            last = Recette.objects.latest('id')
+            id = last.pk + 1
+            r_titre = request.POST['titre']
+            r_type_recette = request.POST['type_recette']
+            r_cout = request.POST['cout']
+            r_temps_cuisson = request.POST['temps_cuisson']
+            r_temps_repos = request.POST['temps_repos']
+            r_ingredients = request.POST['ingredients']
+            r_etapes = request.POST['etapes']
+            r_difficulte = request.POST['difficulte']
+            r_images = request.POST['images']
+            # On parse les elements multiples
+            if (r_ingredients):
+                liste_ingredients = r_ingredients.split(',')
+            if (r_etapes):
+                liste_etapes = r_etapes.split(',')
+            if (r_images):
+                liste_images = r_images.split(',')
+
+            last = Type_Recette.objects.latest('id')
+            id_tr = last.pk + 1
+            type_r = Type_Recette(id=id_tr, type_recette=r_type_recette)
+            r = Recette(id=id, titre=r_titre, type_recette=type_r, cout=r_cout, temps_cuisson=r_temps_cuisson,
+                        temps_repos=r_temps_repos, difficulte=r_difficulte)
+            r.save()
+
+            for i in liste_ingredients:
+                ing = Ingredient(nom_ingredient=i.strip())
+                ing.save()
+                r.ingredients.add(ing)
+
+            for n, e in enumerate(liste_etapes):
+                et = Etape(numero_etape=n, nom_etape=e.strip())
+                et.save()
+                r.etapes.add(et)
+
+            for i in liste_images:
+                img = Images(nom=r_titre, chemin=i.strip())
+                img.save()
+                r.images.add(img)
+
+            r.save()
+
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            #return HttpResponseRedirect('/index')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = NouvelleRecetteForm()
+
+    return render(request, 'recette/new_recipe.html', {'formulaire': form})
 
 def supprimer_recette(request, id):
     recette = get_object_or_404(Recette, pk=id).delete()
