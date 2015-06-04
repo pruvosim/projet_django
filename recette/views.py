@@ -142,11 +142,26 @@ def RegisterView(request):
      last_name = request.POST['last_name']
      password = request.POST['password']
      email = request.POST['email']
-     user = User.objects.create_user(username=username, email=email, password=password)
-     user.first_name = first_name
-     user.last_name = last_name
-     user.save()
-     return AuthView(request)
+     if User.objects.filter(username=username).count():
+        formulaire = RegisterForm()
+        contexte = {
+            'form': formulaire,
+            'existedLogin' : True,
+        }
+        return render(request, 'recette/register.html', contexte)
+     elif password == '':
+        formulaire = RegisterForm()
+        contexte = {
+            'form': formulaire,
+            'notExistedPassword' : True,
+        }
+        return render(request, 'recette/register.html', contexte)
+     else:
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+        return AuthView(request)
 
 #A verifier ca n'a pas l'air de fonctionner
 #@login_required(login_url='/login/')

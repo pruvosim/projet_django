@@ -2,6 +2,14 @@
 
 {% block contenu %}
 
+     {% if existedLogin %}
+        <font color="red"><p>Le Login existe déja. Veuillez essayer de rentrer un nouveau login.</p></font>
+    {% endif %}
+
+     {% if notExistedPassword %}
+        <font color="red"><p>Le mot de passe est manquant et obligatoire. Veuillez rentrer un mot de passe.</p></font>
+    {% endif %}
+
     <form method="post" action="{% url 'recette:register' %}">
         {{ form.as_p }}
         {% csrf_token %}
