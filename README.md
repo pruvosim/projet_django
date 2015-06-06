@@ -1,7 +1,14 @@
-# projet_django
+# Projet Django
+
 Site en Django pour la consultation et création de recettes de cuisine
 
-Pour installer les modules nécessaires : 
-  clonez le projet sur votre machine
-  déplacez vous dans le dossier qui vient d'etre cloné
-  executez la commande "pip install -r requirements.txt"
+Pour installer les modules nécessaires :
+ 
+- Clonez le projet sur votre machine : 
+
+        git clone https://github.com/pruvosim/projet_django.git
+        
+- Déplacez vous dans le dossier qui vient d'etre cloné
+- Executez la commande :
+        
+        "pip install -r requirements.txt"
