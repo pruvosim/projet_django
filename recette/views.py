@@ -6,7 +6,6 @@ from django.views.generic.edit import UpdateView
 from .models import *
 from django.db.models import Avg
 
-# Create your views here.
 
 def index(request):
     recettes = Recette.objects.all()
@@ -99,6 +98,7 @@ class IndexView(generic.ListView):
     model = Recette
     template_name = 'recette/index.html'
     context_object_name = 'recette'
+    paginate_by = 2
 
 
 def user_login(request):

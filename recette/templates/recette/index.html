@@ -45,34 +45,22 @@
     {% endfor %}
     <!-- </ul> -->
 
-    <!-- Pagination -->
-    <div class="row text-center">
-        <div class="col-lg-12">
-            <ul class="pagination">
-                <li>
-                    <a href="#">&laquo;</a>
-                </li>
-                <li class="active">
-                    <a href="#">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">&raquo;</a>
-                </li>
-            </ul>
+
+
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/index?page={{ page_obj.previous_page_number }}">Page précédente</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/index?page={{ page_obj.next_page_number }}">Page suivante</a>
+                {% endif %}
+            </span>
         </div>
-    </div>
-    <!-- /.row -->
+    {% endif %}
 
 {% endblock %}
