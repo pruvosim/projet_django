@@ -1,5 +1,5 @@
 from django import forms
-from .models import Recette, Commentaire
+from .models import Recette, Commentaire, Note
 
 
 class LoginForm(forms.Form):
@@ -33,6 +33,10 @@ class NouvelleRecetteForm(forms.Form):
     difficulte = forms.IntegerField(label="Difficulté", required=True, min_value=1, max_value=5)
     images = forms.CharField(label="Images", widget=forms.Textarea)
 
+
+class NoteForm(forms.Form):
+    note = forms.IntegerField(label="Note", required=True, min_value=1, max_value=5)
+    model = Note
 
 class CommentaireForm(forms.ModelForm):
     class Meta:

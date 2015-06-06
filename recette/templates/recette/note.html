@@ -1,0 +1,27 @@
+{% extends 'recette/_base.html' %}
+
+{% block contenu %}
+
+    <h3>Note pour la recette : {{ recette.titre }}</h3>
+
+    <hr>
+
+    {% if request.session.connected_user %}
+        {% if deja_vote %}
+            <p>Vous avez déja mis une note !</p>
+        {% else %}
+            <form method="post" action="{% url 'recette:ajouter_note' recette.id %}">
+                {{ formulaire.as_p }}
+                {% csrf_token %}
+                <input type="submit" value="Valider la note"/>
+            </form>
+        {% endif %}
+
+    {% else %}
+        <p>Vous devez etre connecté pour pouvoir noter cette recette</p>
+        <p>Connectez vous ici : <a href="/login">Connexion</a></p>
+    {% endif %}
+
+
+
+{% endblock %}

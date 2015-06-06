@@ -6,7 +6,13 @@
 
     <p>Difficulte : {{ recette.difficulte }}/5
         <br/>Cout : {{ recette.cout }} €
-        <br/>Note : {{ moyenne }}/5
+        <br/>
+        {% if moyenne %}
+            Note : {{ moyenne }}/5
+        {% else %}
+            Pas encore de note
+        {% endif %}
+        (<a href="{% url 'recette:ajouter_note' recette.id %}">Mettre une note</a>)
         <br/>Temps de cuisson : {{ recette.temps_cuisson }} minutes
         <br/>Temps de repos : {{ recette.temps_repos }} minutes
     </p>

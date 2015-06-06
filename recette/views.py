@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm, RegisterForm, CommentaireForm
+from .forms import LoginForm, RegisterForm, CommentaireForm, NoteForm
 from django.views.generic.edit import UpdateView
 from .models import *
 from django.db.models import Avg
@@ -26,6 +26,29 @@ def recettes(request, id):
         'nb_commentaires': nb_commentaires,
     }
     return render(request, 'recette/recette.html', contexte)
+
+
+def ajouter_note(request, id):
+    recette = Recette.objects.get(id=id)
+    note_user = Note.objects.filter(recette_id=id).values('utilisateur_id')
+    contexte = {
+        'recette': recette,
+    }
+    if request.method == 'POST':
+        formulaire = NoteForm(request.POST)
+    if note_user:
+        deja_vote = True
+        contexte['deja_vote'] = deja_vote
+        return render(request, 'recette/note.html', contexte)
+    elif formulaire.is_valid():
+        n = Note(recette=Recette.objects.get(id=id), note_utilisateur=request.POST['note'], utilisateur=request.user)
+        n.save()
+        return recettes(request, id)
+    else:
+        formulaire = NoteForm()
+        contexte['formulaire'] = formulaire
+    return render(request, 'recette/note.html', contexte)
+
 
 def commentaires(request, id):
     #redirect_if_not_logged_in(request)
