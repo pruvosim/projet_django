@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, RegisterForm, CommentaireForm
 from django.views.generic.edit import UpdateView
 from .models import *
-
+from django.db.models import Avg
 
 # Create your views here.
 
@@ -18,9 +18,11 @@ def index(request):
 
 def recettes(request, id):
     recette = get_object_or_404(Recette, id=id)
+    moyenne = Note.objects.filter(recette_id=id).aggregate(Avg('note_utilisateur'))['note_utilisateur__avg']
     nb_commentaires = Recette.objects.filter(id=id).values('commentaires').count()
     contexte = {
         'recette': recette,
+        'moyenne': moyenne,
         'nb_commentaires': nb_commentaires,
     }
     return render(request, 'recette/recette.html', contexte)
@@ -229,13 +231,6 @@ def new_recipe(request):
                 r.images.add(img)
 
             r.save()
-
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            #return HttpResponseRedirect('/index')
-
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = NouvelleRecetteForm()
 
