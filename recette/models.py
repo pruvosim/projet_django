@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Recette(models.Model):
     titre = models.CharField(max_length=150)
+    description = models.CharField(max_length=500)
     type_recette = models.ForeignKey('Type_Recette')
     difficulte = models.PositiveIntegerField()
     cout = models.FloatField()

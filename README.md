@@ -11,4 +11,4 @@ Pour installer les modules nécessaires :
 - Déplacez vous dans le dossier qui vient d'etre cloné
 - Executez la commande :
         
-        "pip install -r requirements.txt"
+        pip install -r requirements.txt
