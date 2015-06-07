@@ -33,13 +33,15 @@ def recettes(request, id):
 def ajouter_note(request, id):
     recettes = Recette.objects.all()
     recette = Recette.objects.get(id=id)
-    note_user = Note.objects.filter(recette_id=id).values('utilisateur_id')
+    note_user = Note.objects.filter(recette_id=id, utilisateur_id=request.user.id).values('utilisateur_id')
     contexte = {
         'recettes': recettes,
         'recette': recette,
     }
     if request.method == 'POST':
         formulaire = NoteForm(request.POST)
+    else:
+        formulaire = NoteForm()
     if note_user:
         deja_vote = True
         contexte['deja_vote'] = deja_vote
@@ -47,7 +49,7 @@ def ajouter_note(request, id):
     elif formulaire.is_valid():
         n = Note(recette=Recette.objects.get(id=id), note_utilisateur=request.POST['note'], utilisateur=request.user)
         n.save()
-        return recettes(request, id)
+        return redirect("/index")
     else:
         formulaire = NoteForm()
         contexte['formulaire'] = formulaire
