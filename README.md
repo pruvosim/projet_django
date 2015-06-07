@@ -12,3 +12,7 @@ Pour installer les modules nécessaires :
 - Executez la commande :
         
         pip install -r requirements.txt
+        
+- Pour installer le jeu de données initial executez la commande : 
+
+        python manage.py loaddata recette/fixtures/data.json 
