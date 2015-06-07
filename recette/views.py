@@ -105,10 +105,14 @@ def CommentairePostView(request, id):
 
 class IndexView(generic.ListView):
     model = Recette
-    recettes = Recette.objects.all()
     template_name = 'recette/index.html'
-    context_object_name = 'recettes'
+    context_object_name = 'recettes_affiches'
     paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['recettes'] = Recette.objects.all()
+        return context
 
 
 def user_login(request):
@@ -332,23 +336,23 @@ def redirect_if_not_logged_in(request):
         return redirect("/login")
 
 def select_type_recette(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         recettes = Recette.objects.all()
-        valeur = request.POST.get('select_type')
-        recettes_select = Recette.objects.filter(type_recette=valeur)
+        valeur = request.GET.get('select_type','')
+        recettes_affiches = Recette.objects.filter(type_recette__type_recette=valeur)
         contexte = {
             'recettes': recettes,
-            'recette': recettes_select,
+            'recettes_affiches': recettes_affiches
         }
     return render(request, 'recette/index.html', contexte)
 
 def select_difficulte_recette(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         recettes = Recette.objects.all()
-        valeur = request.POST.get('select_difficulte')
-        recettes_select = Recette.objects.filter(type_recette=valeur)
+        valeur = request.GET.get('select_difficulte','')
+        recettes_affiches = Recette.objects.filter(difficulte=valeur)
         contexte = {
             'recettes': recettes,
-            'recette': recettes_select,
+            'recettes_affiches': recettes_affiches
         }
-    return render(request, 'recette/index.html', contexte)
+        return render(request, 'recette/index.html', contexte)

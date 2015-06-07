@@ -58,7 +58,7 @@
                     {% endif %}
                 </li>
                 <li >
-                    <form method="post" action="{% url 'recette:select_type_recette' %}">
+                    <form method="GET" action="{% url 'recette:select_type_recette' %}">
                         <p>Type de recettes:
                             <select name="select_type">
                                 {% regroup recettes by type_recette as types_recettes %}
@@ -72,12 +72,12 @@
                     </form>
                 </li>
                 <li >
-                    <form method="post" action="{% url 'recette:select_difficulte_recette' %}">
+                    <form method="GET" action="{% url 'recette:select_difficulte_recette' %}">
                         <p>Difficulté des recettes:</p>
                             <select name="select_difficulte">
                                 {% regroup recettes by difficulte as difficultes %}
                                 {% for d in difficultes %}
-                                    <option  value="{{ t.grouper }}">{{ d.grouper }}</option>
+                                    <option  value="{{ d.grouper }}">{{ d.grouper }}</option>
                                 {% endfor %}
                             </select>
                          {% csrf_token %}
