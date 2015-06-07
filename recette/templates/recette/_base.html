@@ -58,24 +58,31 @@
                     {% endif %}
                 </li>
                 <li >
-                    <p>Type de recettes:
-                        <select>
-                            {% regroup recette by type_recette as types_recettes %}
-                            {% for t in types_recettes %}
-                                <option>{{ t.grouper }}</option>
-                            {% endfor %}
-                        </select>
-                    </p>
+                    <form method="post" action="{% url 'recette:select_type_recette' %}">
+                        <p>Type de recettes:
+                            <select name="select_type">
+                                {% regroup recettes by type_recette as types_recettes %}
+                                {% for t in types_recettes %}
+                                    <option value="{{ t.grouper }}">{{ t.grouper }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                        {% csrf_token %}
+                        <input type="submit" value="OK"/>
+                    </form>
                 </li>
                 <li >
-                    <p>Difficulté des recettes:
-                        <select>
-                            {% regroup recette by difficulte as difficultes %}
-                            {% for d in difficultes %}
-                                <option>{{ d.grouper }}</option>
-                            {% endfor %}
-                        </select>
-                    </p>
+                    <form method="post" action="{% url 'recette:select_difficulte_recette' %}">
+                        <p>Difficulté des recettes:</p>
+                            <select name="select_difficulte">
+                                {% regroup recettes by difficulte as difficultes %}
+                                {% for d in difficultes %}
+                                    <option  value="{{ t.grouper }}">{{ d.grouper }}</option>
+                                {% endfor %}
+                            </select>
+                         {% csrf_token %}
+                        <input type="submit" value="OK"/>
+                    </form>
                 </li>
                 <li>
                     <a href="/rechercher">Rechercher</a>

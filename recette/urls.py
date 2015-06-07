@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from recette.views import IndexView, AuthView, RegisterView, recettes, user_login, user_logout, user_create, nouvelle_recette, supprimer_recette \
-    , rechercher, modifier_recette, commentaires, CommentairePostView, new_recipe, ajouter_note
+    , rechercher, modifier_recette, commentaires, CommentairePostView, new_recipe, ajouter_note, select_type_recette, select_difficulte_recette
 
 
 urlpatterns = patterns('',
@@ -20,7 +20,8 @@ urlpatterns = patterns('',
                        url(r'supprimer_recette/(?P<id>\d+)/$', supprimer_recette, name="supprimer_recette"),
                        url(r'modifier_recette/(?P<pk>[0-9]+)/$', modifier_recette.as_view(), name='modifier_recette'),
                        url(r'rechercher/$', rechercher, name='rechercher'),
-
+                       url(r'^type_recette/$', select_type_recette, name='select_type_recette'),
+                       url(r'^difficulte_recette/$', select_difficulte_recette, name='select_difficulte_recette'),
 
 )
 

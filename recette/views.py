@@ -10,7 +10,7 @@ from django.db.models import Avg
 def index(request):
     recettes = Recette.objects.all()
     contexte = {
-        'recette': recettes,
+        'recettes': recettes,
     }
     return render(request, 'recette/index.html', contexte)
 
@@ -18,8 +18,10 @@ def index(request):
 def recettes(request, id):
     recette = get_object_or_404(Recette, id=id)
     moyenne = Note.objects.filter(recette_id=id).aggregate(Avg('note_utilisateur'))['note_utilisateur__avg']
+    recettes = Recette.objects.all()
     nb_commentaires = Recette.objects.filter(id=id).values('commentaires').count()
     contexte = {
+        'recettes': recettes,
         'recette': recette,
         'moyenne': moyenne,
         'nb_commentaires': nb_commentaires,
@@ -28,9 +30,11 @@ def recettes(request, id):
 
 
 def ajouter_note(request, id):
+    recettes = Recette.objects.all()
     recette = Recette.objects.get(id=id)
     note_user = Note.objects.filter(recette_id=id).values('utilisateur_id')
     contexte = {
+        'recettes': recettes,
         'recette': recette,
     }
     if request.method == 'POST':
@@ -53,6 +57,7 @@ def commentaires(request, id):
     #redirect_if_not_logged_in(request)
     #if not request.user.is_authenticated():
     #    return redirect("/login")
+    recettes = Recette.objects.all()
     recette = Recette.objects.get(id=id)
     commentaires_id = Recette.objects.filter(id=id).values('commentaires')
     commentaires = []
@@ -68,6 +73,7 @@ def commentaires(request, id):
         except Exception as e:
             c = None
     contexte = {
+        'recettes': recettes,
         'recette': recette,
         'commentaires': commentaires,
         'formulaire': formulaire,
@@ -98,11 +104,12 @@ class IndexView(generic.ListView):
     model = Recette
     recettes = Recette.objects.all()
     template_name = 'recette/index.html'
-    context_object_name = 'recette'
+    context_object_name = 'recettes'
     paginate_by = 2
 
 
 def user_login(request):
+    recettes = Recette.objects.all()
     try :
         if request.session['connected_user']:
             return index(request)
@@ -115,6 +122,7 @@ def user_login(request):
     else:
         formulaire = LoginForm()
     contexte = {
+        'recettes': recettes,
         'form': formulaire,
     }
     return render(request, 'recette/login.html', contexte)
@@ -129,8 +137,10 @@ def user_create(request):
             return index(request)
     except Exception as e:
         pass
+    recettes = Recette.objects.all()
     formulaire = RegisterForm()
     contexte = {
+        'recettes': recettes,
         'form': formulaire,
     }
     return render(request, 'recette/register.html', contexte)
@@ -146,17 +156,21 @@ def AuthView(request):
             return index(request)
         else:
             # Return a 'disabled account' error message
+            recettes = Recette.objects.all()
             formulaire = LoginForm()
             formulaire.add_error()
             contexte = {
+                'recettes': recettes,
                 'form': formulaire,
                 'DesactivatedUser' : True,
             }
             return render(request, 'recette/login.html', contexte)
     else:
         # Return an 'invalid login' error message.
+        recettes = Recette.objects.all()
         formulaire = LoginForm()
         contexte = {
+            'recettes': recettes,
             'form': formulaire,
             'badLogin' : True,
         }
@@ -168,9 +182,11 @@ def RegisterView(request):
      last_name = request.POST['last_name']
      password = request.POST['password']
      email = request.POST['email']
+     recettes = Recette.objects.all()
      if User.objects.filter(username=username).count():
         formulaire = RegisterForm()
         contexte = {
+            'recettes': recettes,
             'form': formulaire,
             'existedLogin' : True,
         }
@@ -178,6 +194,7 @@ def RegisterView(request):
      elif password == '':
         formulaire = RegisterForm()
         contexte = {
+            'recettes': recettes,
             'form': formulaire,
             'notExistedPassword' : True,
         }
@@ -199,7 +216,9 @@ def nouvelle_recette(request):
             formulaire.save()
     else:
         formulaire = RecetteForm()
+    recettes = Recette.objects.all()
     contexte = {
+        'recettes': recettes,
         'formulaire': formulaire,
     }
     return render(request, 'recette/nouvelle_recette.html', contexte)
@@ -258,7 +277,7 @@ def new_recipe(request):
     else:
         form = NouvelleRecetteForm()
 
-    return render(request, 'recette/new_recipe.html', {'formulaire': form})
+    return render(request, 'recette/new_recipe.html', {'recettes': recettes,'formulaire': form})
 
 def supprimer_recette(request, id):
     recette = get_object_or_404(Recette, pk=id).delete()
@@ -285,9 +304,12 @@ def rechercher(request):
     if request.method == 'GET':
         terme_recherche = request.GET.get('r', '')
         if terme_recherche:
-            recettes = Recette.objects.filter(titre__icontains=terme_recherche)
+            recettes = Recette.objects.all()
+            recette = Recette.objects.filter(titre__icontains=terme_recherche)
+
             contexte = {
-                'recette': recettes,
+                'recettes': recettes,
+                'recette': recette,
             }
             return render(request, 'recette/rechercher.html', contexte)
         else:
@@ -303,3 +325,25 @@ def redirect_if_not_logged_in(request):
 #        user_login(request)
     if not request.user.is_authenticated():
         return redirect("/login")
+
+def select_type_recette(request):
+    if request.method == 'POST':
+        recettes = Recette.objects.all()
+        valeur = request.POST.get('select_type')
+        recettes_select = Recette.objects.filter(type_recette=valeur)
+        contexte = {
+            'recettes': recettes,
+            'recette': recettes_select,
+        }
+    return render(request, 'recette/index.html', contexte)
+
+def select_difficulte_recette(request):
+    if request.method == 'POST':
+        recettes = Recette.objects.all()
+        valeur = request.POST.get('select_difficulte')
+        recettes_select = Recette.objects.filter(type_recette=valeur)
+        contexte = {
+            'recettes': recettes,
+            'recette': recettes_select,
+        }
+    return render(request, 'recette/index.html', contexte)
