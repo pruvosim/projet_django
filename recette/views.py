@@ -96,6 +96,7 @@ def CommentairePostView(request, id):
 
 class IndexView(generic.ListView):
     model = Recette
+    recettes = Recette.objects.all()
     template_name = 'recette/index.html'
     context_object_name = 'recette'
     paginate_by = 2

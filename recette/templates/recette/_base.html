@@ -57,6 +57,26 @@
                         <a href="/login">Enregistrement / Connexion</a>
                     {% endif %}
                 </li>
+                <li >
+                    <p>Type de recettes:
+                        <select>
+                            {% regroup recette by type_recette as types_recettes %}
+                            {% for t in types_recettes %}
+                                <option>{{ t.grouper }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                </li>
+                <li >
+                    <p>Difficulté des recettes:
+                        <select>
+                            {% regroup recette by difficulte as difficultes %}
+                            {% for d in difficultes %}
+                                <option>{{ d.grouper }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                </li>
                 <li>
                     <a href="/rechercher">Rechercher</a>
                 </li>
