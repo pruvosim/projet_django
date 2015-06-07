@@ -2,6 +2,8 @@
 
 Site en Django pour la consultation et création de recettes de cuisine
 
+> La base sqlLite 3 est présente car nous avons rencontré des problèmes avec les fixtures
+
 Pour installer les modules nécessaires :
  
 - Clonez le projet sur votre machine : 
@@ -13,6 +15,10 @@ Pour installer les modules nécessaires :
         
         pip install -r requirements.txt
         
-- Pour installer le jeu de données initial executez la commande : 
+# Accès au site web
 
-        python manage.py loaddata recette/fixtures/data.json 
+Pour accéder au site, lancez le serveur en executant par exemple la commande : 
+
+        python manage.py runserver
+        
+Ensuite dans un navigateur rendez-vous à l'adresse : [http://localhost:8000](http://localhost:8000)
