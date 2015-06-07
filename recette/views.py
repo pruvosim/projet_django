@@ -141,7 +141,7 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return index(request)
+    return redirect('/index')
 
 def user_create(request):
     try :
@@ -166,8 +166,7 @@ def AuthView(request):
         if user.is_active:
             login(request, user)
             request.session['connected_user'] = user
-            recettes = Recette.objects.all()
-            return index(request)
+            return redirect('/index')
         else:
             # Return a 'disabled account' error message
             recettes = Recette.objects.all()
