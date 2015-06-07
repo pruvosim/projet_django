@@ -12,6 +12,7 @@ def index(request):
     recettes = Recette.objects.all()
     contexte = {
         'recettes': recettes,
+        'recettes_affiches': recettes,
     }
     return render(request, 'recette/index.html', contexte)
 
@@ -23,6 +24,7 @@ def recettes(request, id):
     nb_commentaires = Recette.objects.filter(id=id).values('commentaires').count()
     contexte = {
         'recettes': recettes,
+        'recettes_affiches': recettes,
         'recette': recette,
         'moyenne': moyenne,
         'nb_commentaires': nb_commentaires,
@@ -36,6 +38,7 @@ def ajouter_note(request, id):
     note_user = Note.objects.filter(recette_id=id, utilisateur_id=request.user.id).values('utilisateur_id')
     contexte = {
         'recettes': recettes,
+        'recettes_affiches': recettes,
         'recette': recette,
     }
     if request.method == 'POST':
@@ -77,6 +80,7 @@ def commentaires(request, id):
             c = None
     contexte = {
         'recettes': recettes,
+        'recettes_affiches': recettes,
         'recette': recette,
         'commentaires': commentaires,
         'formulaire': formulaire,
@@ -130,6 +134,7 @@ def user_login(request):
         formulaire = LoginForm()
     contexte = {
         'recettes': recettes,
+        'recettes_affiches': recettes,
         'form': formulaire,
     }
     return render(request, 'recette/login.html', contexte)
@@ -148,6 +153,7 @@ def user_create(request):
     formulaire = RegisterForm()
     contexte = {
         'recettes': recettes,
+        'recettes_affiches': recettes,
         'form': formulaire,
     }
     return render(request, 'recette/register.html', contexte)
@@ -160,6 +166,7 @@ def AuthView(request):
         if user.is_active:
             login(request, user)
             request.session['connected_user'] = user
+            recettes = Recette.objects.all()
             return index(request)
         else:
             # Return a 'disabled account' error message
@@ -168,6 +175,7 @@ def AuthView(request):
             formulaire.add_error()
             contexte = {
                 'recettes': recettes,
+                'recettes_affiches': recettes,
                 'form': formulaire,
                 'DesactivatedUser' : True,
             }
@@ -178,6 +186,7 @@ def AuthView(request):
         formulaire = LoginForm()
         contexte = {
             'recettes': recettes,
+            'recettes_affiches': recettes,
             'form': formulaire,
             'badLogin' : True,
         }
@@ -194,6 +203,7 @@ def RegisterView(request):
         formulaire = RegisterForm()
         contexte = {
             'recettes': recettes,
+            'recettes_affiches': recettes,
             'form': formulaire,
             'existedLogin' : True,
         }
@@ -202,6 +212,7 @@ def RegisterView(request):
         formulaire = RegisterForm()
         contexte = {
             'recettes': recettes,
+            'recettes_affiches': recettes,
             'form': formulaire,
             'notExistedPassword' : True,
         }
@@ -226,6 +237,7 @@ def nouvelle_recette(request):
     recettes = Recette.objects.all()
     contexte = {
         'recettes': recettes,
+        'recettes_affiches': recettes,
         'formulaire': formulaire,
     }
     return render(request, 'recette/nouvelle_recette.html', contexte)
@@ -285,8 +297,8 @@ def new_recipe(request):
             return redirect("/index")
     else:
         form = NouvelleRecetteForm()
-
-    return render(request, 'recette/new_recipe.html', {'recettes': recettes,'formulaire': form})
+    recettes = Recette.objects.all()
+    return render(request, 'recette/new_recipe.html', {'recettes': recettes,'recettes_affiches': recettes,'formulaire': form})
 
 def supprimer_recette(request, id):
     recette = get_object_or_404(Recette, pk=id).delete()
@@ -310,21 +322,21 @@ class modifier_recette(UpdateView):
 
 
 def rechercher(request):
+    recettes = Recette.objects.all()
+    contexte = {
+        'recettes': recettes,
+        'recettes_affiches': recettes,
+    }
     if request.method == 'GET':
         terme_recherche = request.GET.get('r', '')
         if terme_recherche:
-            recettes = Recette.objects.all()
             recette = Recette.objects.filter(titre__icontains=terme_recherche)
-
-            contexte = {
-                'recettes': recettes,
-                'recette': recette,
-            }
+            contexte['recette'] = recette
             return render(request, 'recette/rechercher.html', contexte)
         else:
-            return render(request, 'recette/rechercher.html')
+            return render(request, 'recette/rechercher.html', contexte)
     else:
-        return render(request, 'recette/rechercher.html')
+        return render(request, 'recette/rechercher.html', contexte)
 
 
 def redirect_if_not_logged_in(request):
