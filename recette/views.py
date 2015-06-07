@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm, RegisterForm, CommentaireForm, NoteForm
 from django.views.generic.edit import UpdateView
-from .models import *
 from django.db.models import Avg
+
+from .forms import LoginForm, RegisterForm, CommentaireForm, NoteForm
+from .models import *
 
 
 def index(request):
@@ -236,6 +237,7 @@ def new_recipe(request):
             id = last.pk + 1
             r_titre = request.POST['titre']
             r_type_recette = request.POST['type_recette']
+            r_description = request.POST['description']
             r_cout = request.POST['cout']
             r_temps_cuisson = request.POST['temps_cuisson']
             r_temps_repos = request.POST['temps_repos']
@@ -255,7 +257,7 @@ def new_recipe(request):
             id_tr = last.pk + 1
             type_r = Type_Recette(id=id_tr, type_recette=r_type_recette)
             r = Recette(id=id, titre=r_titre, type_recette=type_r, cout=r_cout, temps_cuisson=r_temps_cuisson,
-                        temps_repos=r_temps_repos, difficulte=r_difficulte)
+                        temps_repos=r_temps_repos, difficulte=r_difficulte, description=r_description)
             r.save()
 
             for i in liste_ingredients:
@@ -274,6 +276,7 @@ def new_recipe(request):
                 r.images.add(img)
 
             r.save()
+            return redirect("/index")
     else:
         form = NouvelleRecetteForm()
 
