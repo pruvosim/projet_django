@@ -57,33 +57,6 @@
                         <a href="/login">Enregistrement / Connexion</a>
                     {% endif %}
                 </li>
-                <li >
-                    <form method="GET" action="{% url 'recette:select_type_recette' %}">
-                        <p>Type de recettes:
-                            <select name="select_type">
-                                {% regroup recettes by type_recette as types_recettes %}
-                                {% for t in types_recettes %}
-                                    <option value="{{ t.grouper }}">{{ t.grouper }}</option>
-                                {% endfor %}
-                            </select>
-                        </p>
-                        {% csrf_token %}
-                        <input type="submit" value="OK"/>
-                    </form>
-                </li>
-                <li >
-                    <form method="GET" action="{% url 'recette:select_difficulte_recette' %}">
-                        <p>Difficulté des recettes:</p>
-                            <select name="select_difficulte">
-                                {% regroup recettes by difficulte as difficultes %}
-                                {% for d in difficultes %}
-                                    <option  value="{{ d.grouper }}">{{ d.grouper }}</option>
-                                {% endfor %}
-                            </select>
-                         {% csrf_token %}
-                        <input type="submit" value="OK"/>
-                    </form>
-                </li>
                 <li>
                     <a href="/rechercher">Rechercher</a>
                 </li>
@@ -93,6 +66,37 @@
     </div>
     <!-- /.container -->
 </nav>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Tri des recettes</h3>
+  </div>
+  <div class="panel-body">
+    <form method="GET" action="{% url 'recette:select_difficulte_recette' %}">
+        <p>Difficulté des recettes :
+            <select name="select_difficulte">
+                {% regroup recettes by difficulte as difficultes %}
+                {% for d in difficultes %}
+                    <option  value="{{ d.grouper }}">{{ d.grouper }}</option>
+                {% endfor %}
+            </select>
+         {% csrf_token %}
+        <input type="submit" value="OK"/></p>
+    </form>
+
+    <form method="GET" action="{% url 'recette:select_type_recette' %}">
+        <p>Type de recettes:
+            <select name="select_type">
+                {% regroup recettes by type_recette as types_recettes %}
+                {% for t in types_recettes %}
+                    <option value="{{ t.grouper }}">{{ t.grouper }}</option>
+                {% endfor %}
+            </select>
+        {% csrf_token %}
+        <input type="submit" value="OK"/></p>
+    </form>
+  </div>
+</div>
 
 <!-- Page Content -->
 <div class="container">
